@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import "./App.css";
-import Person from "./Person/Person";
+import classes from "./App.css";
+import Person from "./components/Persons/Person/Person";
+import ErrorBoundary from './ErrorBoundary/errorBoundary';
 
 
 class App extends Component {
@@ -55,69 +56,41 @@ class App extends Component {
     })
   }
 
-// Radium is a package in React which is used to have inline-styles for the HTML Elements inorder to use Psudo selectors like hover
-// Radium is used to write media queries which makes our app responsive
   render() {
-    const style = {
-      backgroundColor: "green",
-      color: 'white',
-      font: "inherit",
-      border: "1px solid blue",
-      padding: "8px",
-      cursor: "pointer",
-      ':hover': {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
-    };
-
     let persons = null;
+    let btnClass = '';
+
     if(this.state.showPersons) {
         persons = (
             <div>
                 {this.state.persons.map((person, index) => {
-                  return (<Person key={person.id}
-                  click={() => this.deletePersonHandler(index)}
-                  name={person.name}
-                  age={person.age}
-                  changed={(event) => this.nameChangedHandler(event, person.id)}
-                />)
+                  return (<ErrorBoundary key={person.id}>  
+                    <Person click={() => this.deletePersonHandler(index)}
+                    name={person.name}
+                    age={person.age}
+                    changed={(event) => this.nameChangedHandler(event, person.id)}/> 
+                </ErrorBoundary>)
                 })}
-                
-                {/* <Person
-                  changed={this.nameChangedHandler}
-                  click={this.switchNameHandler.bind(this, "Jyothi!")}
-                  name={this.state.persons[1].name}
-                  age={this.state.persons[1].age}
-                >
-                  {" "}
-                  My Hobbies Gaming!{" "}
-                </Person> */}
-                
             </div> 
         );
 
-        style.backgroundColor = 'red';
-        style[':hover'] = {
-          backgroundColor: 'salmon',
-          color: 'black'
-        }
+        btnClass = classes.Red;
     }
 
-    let classes = [];
+    let newclass = [];
     if(this.state.persons.length <= 2)
-      classes.push('red')
+      newclass.push(classes.red)
     
     if(this.state.persons.length <= 1)
-      classes.push('bold')
+      newclass.push(classes.bold)
 
 
     return (
-          <div className="App">
+          <div className={classes.App}>
             <h1>Welcome to React</h1>
-            <p className={classes.join(' ')}>This is really working!</p>
+            <p className={newclass.join(' ')}>This is really working!</p>
             <button
-              style={style}
+              className = {btnClass}
               onClick={this.togglePersonsHandler}>
               Toggle Persons
             </button>
