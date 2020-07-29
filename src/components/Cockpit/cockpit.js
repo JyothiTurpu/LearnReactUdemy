@@ -7,7 +7,25 @@ const Cockpit = (props) => {
   useEffect(() => {
     console.log('cockpit.js useEffect');
     //Send HTTP Request
-  });
+    const timer = setTimeout(() => {
+      alert('Saved Data to Cloud!');
+    }, 1000);
+
+    return () => {
+      console.log('cockpit useEffect return statement');
+      clearTimeout(timer);
+    }
+  }, []);
+
+
+
+  useEffect(() => {
+    console.log('cockpit.js 2nd useEffect')
+    return () => {
+      console.log('cockpit.js 2nd useEffect cleanup work')
+    }
+  })
+
 
 
   let newclass = [];
@@ -16,10 +34,10 @@ const Cockpit = (props) => {
     if(props.showPersons)
       btnClass = classes.Red;
 
-    if(props.persons.length <= 2)
+    if(props.personsLength <= 2)
       newclass.push(classes.red)
     
-    if(props.persons.length <= 1)
+    if(props.personsLength <= 1)
       newclass.push(classes.bold)
 
   return (
@@ -35,4 +53,4 @@ const Cockpit = (props) => {
   );
 }
 
-export default Cockpit;
+export default React.memo(Cockpit);
